@@ -1,0 +1,81 @@
+/* ── Fonts must come BEFORE @import "tailwindcss" ── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Alata&display=swap');
+@import "tailwindcss";
+
+/* ── CSS Custom Properties ── */
+:root {
+  --accent: #F5C518;
+  --accent-hover: #e0b310;
+  --bg: #F4F3EF;
+  --text-dark: #111111;
+  --text-muted: #888888;
+}
+
+@theme {
+  --font-body: 'Inter', sans-serif;
+  --font-heading:  "Alata", sans-serif;
+}
+
+/* ── Base ── */
+/* Tailwind Preflight already resets margins/padding; box-sizing only needed here */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg);
+  color: var(--text-dark);
+  overflow-x: hidden;
+}
+
+@layer utilities {
+  .stroke-text {
+    color: transparent;
+    -webkit-text-stroke: 0.5px #16161697;
+    text-stroke: 0.5px #16161697;
+  }
+}
+
+/* ── Custom Scrollbar ── */
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #F5C518 #ece9e3;
+}
+
+/* Chrome / Safari / Edge */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #ece9e3;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #F5C518;
+  border-radius: 10px;
+  border: 1px solid #ece9e3;
+  transition: background 0.2s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #d4a914;
+}
+
+::-webkit-scrollbar-corner {
+  background: #ece9e3;
+}
+
+.about-div > span {
+  color: #16161697 !important;
+}
