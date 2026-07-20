@@ -180,7 +180,7 @@ const Hero = () => {
       ═══════════════════════════════════════════ */}
         <img
           ref={imgRef}
-          src="/hero.png"
+          src="/hero.webp"
           alt="Anuj — Frontend Developer"
           className="absolute z-20 pointer-events-none select-none object-contain"
           style={{
