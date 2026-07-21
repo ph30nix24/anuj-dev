@@ -9,7 +9,7 @@ const getTier = (pct) => {
   return 'base';
 };
 
-const SkillTag = ({ skill, delay }) => {
+const SkillTag = ({ skill, delay, dark }) => {
   const tagRef = useRef(null);
   const [hovered, setHovered] = useState(false);
   const tier = getTier(skill.pct);
@@ -29,7 +29,12 @@ const SkillTag = ({ skill, delay }) => {
       ref={tagRef}
       className="relative inline-flex items-center gap-1.5 rounded-full cursor-default
                  transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg"
-      style={{ ...styles, backdropFilter: 'blur(6px)' }}
+      style={{ 
+        ...styles, 
+        backdropFilter: 'blur(6px)',
+        color: dark ? '#d1d5db' : '#374151',
+        transition: 'background 0.5s ease, color 0.5s ease, border 0.5s ease, transform 0.2s'
+      }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -53,4 +58,4 @@ const SkillTag = ({ skill, delay }) => {
   );
 };
 
-export default SkillTag
+export default SkillTag;

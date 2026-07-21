@@ -1,6 +1,7 @@
 /* ── Fonts must come BEFORE @import "tailwindcss" ── */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Alata&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap');
 @import "tailwindcss";
 
 /* ── CSS Custom Properties ── */
@@ -15,6 +16,7 @@
 @theme {
   --font-body: 'Inter', sans-serif;
   --font-heading:  "Alata", sans-serif;
+  --font-logo: "Uncial Antiqua", system-ui;
 }
 
 /* ── Base ── */
@@ -22,6 +24,7 @@
 *, *::before, *::after {
   box-sizing: border-box;
 }
+
 
 html {
   scroll-behavior: smooth;
@@ -44,10 +47,12 @@ body {
 
 /* ── Custom Scrollbar ── */
 
+/* ── Light mode (default) ── */
+
 /* Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #F5C518 #ece9e3;
+  scrollbar-color: #F5C518 transparent;
 }
 
 /* Chrome / Safari / Edge */
@@ -57,15 +62,14 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #ece9e3;
+  background: transparent;
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
   background: #F5C518;
   border-radius: 10px;
-  border: 1px solid #ece9e3;
-  transition: background 0.2s;
+  border: 1px solid #e8e5df;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -73,9 +77,14 @@ body {
 }
 
 ::-webkit-scrollbar-corner {
-  background: #ece9e3;
+  background: transparent;
 }
 
 .about-div > span {
   color: #16161697 !important;
 }
+
+.hero-image {
+  filter: drop-shadow(0 0 30px rgba(255, 210, 80, 0.35));
+}
+

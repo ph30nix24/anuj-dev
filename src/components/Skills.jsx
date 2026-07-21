@@ -4,27 +4,12 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import SkillTag from './Skills/SkillTag';
 import CategoryCard from './Skills/CategoryCard';
 import { ALL_TECH, CATEGORIES } from '../utils';
-
+import { useTheme } from '../context/ThemeContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
-/* ─────────────────────────── Data ─────────────────────────── */
-
-
-
-
-/* ── Tier helpers ── */
-
-
-
-
-
-
-/* ── Category card ── */
-
-
 /* ── Marquee row ── */
-const Marquee = ({ reverse }) => (
+const Marquee = ({ reverse, dark }) => (
   <div className="overflow-hidden select-none">
     <div
       className="flex gap-5 w-max"
@@ -33,15 +18,24 @@ const Marquee = ({ reverse }) => (
       {[...ALL_TECH, ...ALL_TECH].map((t, i) => (
         <div
           key={i}
-          className="flex items-center gap-2 px-4 py-2 rounded-full shrink-0"
+          className="flex items-center gap-2 px-4 py-2 rounded-full shrink-0 transition-colors duration-500"
           style={{
-            background: 'rgba(255,255,255,0.65)',
-            border: '1px solid rgba(220,218,210,0.5)',
+            background: dark ? 'rgba(35,35,35,0.9)' : 'rgba(255,255,255,0.65)',
+            border: `1px solid ${dark ? 'rgba(255,255,255,0.08)' : 'rgba(220,218,210,0.5)'}`,
             backdropFilter: 'blur(6px)',
+            transition: 'background 0.5s ease, border 0.5s ease'
           }}
         >
           <span className="text-[11px] font-bold" style={{ color: '#F5C518' }}>✦</span>
-          <span className="text-[12px] font-semibold text-gray-600 whitespace-nowrap">{t}</span>
+          <span 
+            className="text-[12px] font-semibold whitespace-nowrap"
+            style={{ 
+              color: dark ? '#a0a0a0' : '#4b5563',
+              transition: 'color 0.5s ease'
+            }}
+          >
+            {t}
+          </span>
         </div>
       ))}
     </div>
@@ -50,6 +44,7 @@ const Marquee = ({ reverse }) => (
 
 /* ── Main component ── */
 const Skills = () => {
+  const { dark } = useTheme();
   const sectionRef = useRef(null);
   const labelRef   = useRef(null);
   const headingRef = useRef(null);
@@ -87,8 +82,13 @@ const Skills = () => {
     <section
       ref={sectionRef}
       id="skills"
-      className="relative w-full overflow-hidden"
-      style={{ background: '#F4F3EF', paddingTop: '100px', paddingBottom: '0' }}
+      className="relative w-full overflow-hidden transition-colors duration-500"
+      style={{ 
+        background: dark ? '#0d0d0d' : '#F4F3EF', 
+        paddingTop: '100px', 
+        paddingBottom: '0',
+        transition: 'background 0.5s ease'
+      }}
     >
       {/* ── Header + Watermark stacked together ── */}
       <div className="relative z-10 text-center px-6 mb-14">
@@ -100,12 +100,13 @@ const Skills = () => {
                      justify-center pointer-events-none select-none z-0"
         >
           <span
-            className="font-black uppercase leading-none"
+            className="font-black uppercase leading-none transition-colors duration-500"
             style={{
               fontFamily: "'Space Grotesk',sans-serif",
               fontSize: 'clamp(72px,13vw,168px)',
-              color: 'rgba(175,172,165,0.30)',
+              color: dark ? 'rgba(255,255,255,0.06)' : 'rgba(175,172,165,0.30)',
               letterSpacing: '0.12em',
+              transition: 'color 0.5s ease'
             }}
           >
             SKILLS
@@ -125,8 +126,13 @@ const Skills = () => {
         {/* Heading */}
         <h2
           ref={headingRef}
-          className="relative z-10 font-bold text-gray-900 leading-tight"
-          style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: 'clamp(26px,3.5vw,46px)' }}
+          className="relative z-10 font-bold leading-tight transition-colors duration-500"
+          style={{ 
+            fontFamily: "'Space Grotesk',sans-serif", 
+            fontSize: 'clamp(26px,3.5vw,46px)',
+            color: dark ? '#f0f0f0' : '#111827',
+            transition: 'color 0.5s ease'
+          }}
         >
           Technologies I work with
         </h2>
@@ -139,18 +145,22 @@ const Skills = () => {
       >
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {CATEGORIES.map((cat, i) => (
-            <CategoryCard key={cat.id} cat={cat} cardIdx={i} triggered={triggered} />
+            <CategoryCard key={cat.id} cat={cat} cardIdx={i} triggered={triggered} dark={dark} />
           ))}
         </div>
       </div>
 
       {/* Scrolling marquee */}
       <div
-        className="relative z-10 flex flex-col gap-3 py-8 overflow-hidden"
-        style={{ background: 'rgba(240,238,232,0.6)', borderTop: '1px solid rgba(220,218,210,0.5)' }}
+        className="relative z-10 flex flex-col gap-3 py-8 overflow-hidden transition-colors duration-500"
+        style={{ 
+          background: dark ? 'rgba(18,18,18,0.9)' : 'rgba(240,238,232,0.6)', 
+          borderTop: `1px solid ${dark ? 'rgba(255,255,255,0.06)' : 'rgba(220,218,210,0.5)'}`,
+          transition: 'background 0.5s ease, border-top 0.5s ease'
+        }}
       >
-        <Marquee reverse={false} />
-        <Marquee reverse={true}  />
+        <Marquee reverse={false} dark={dark} />
+        <Marquee reverse={true} dark={dark} />
       </div>
 
       <style>{`

@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ChevronUp, CodeXml, Infinity, Pen, Users } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -58,6 +59,7 @@ const CodeIcon = () => (
 
 /* ─── Component ─── */
 const About = () => {
+  const { dark } = useTheme();
   const sectionRef = useRef(null);
   const labelRef = useRef(null);
   const headingRef = useRef(null);
@@ -127,14 +129,15 @@ const About = () => {
     <section
       ref={sectionRef}
       id="about"
-      className="relative w-full overflow-hidden bg-[#F4F3EF] h-fit pt-25 pb-20"
+      className="relative w-full overflow-hidden h-fit pt-25 pb-20"
+      style={{ background: dark ? '#0d0d0d' : '#F4F3EF', transition: 'background 0.5s ease' }}
     >
 
       {/* ── PIXEL PERFECT · left edge ── */}
       <div className="hidden lg:flex flex-col gap-1 absolute left-10 top-1/2 -translate-y-1/2 z-20">
         {['PIXEL', 'PERFECT', 'UI/UX'].map(w => (
-          <span key={w} className="block font-semibold uppercase text-gray-400"
-            style={{ fontSize: '11px', letterSpacing: '0.28em' }}>
+          <span key={w} className="block font-semibold uppercase"
+            style={{ fontSize: '11px', letterSpacing: '0.28em', color: dark ? 'rgba(160,160,160,0.45)' : '#9ca3af', transition: 'color 0.5s ease' }}>
             {w}
           </span>
         ))}
@@ -146,21 +149,21 @@ const About = () => {
           width: '1.5px', height: '52px',
           background: 'linear-gradient(to bottom,#F5C518,rgba(245,197,24,0.1))'
         }} />
-        <span className="font-semibold text-gray-400 uppercase"
-          style={{ fontSize: '9px', letterSpacing: '0.32em', writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>
+        <span className="font-semibold uppercase"
+          style={{ fontSize: '9px', letterSpacing: '0.32em', writingMode: 'vertical-rl', transform: 'rotate(180deg)', color: dark ? 'rgba(160,160,160,0.5)' : '#9ca3af', transition: 'color 0.5s ease' }}>
           Scroll Down
         </span>
       </div>
 
       {/* ── Open to Opportunities · right edge top ── */}
       <div ref={pillRef}
-        className="hidden lg:flex items-center gap-2.5 bg-white rounded-full px-4 py-2 shadow-md border border-gray-100 absolute right-10 z-20"
-        style={{ top: '110px' }}>
+        className="hidden lg:flex items-center gap-2.5 rounded-full px-4 py-2 shadow-md border absolute right-10 z-20"
+        style={{ top: '110px', background: dark ? 'rgba(28,28,28,0.95)' : 'white', borderColor: dark ? 'rgba(255,255,255,0.10)' : '#f3f4f6', transition: 'background 0.5s ease, border-color 0.5s ease, color 0.5s ease' }}>
         <span className="relative flex h-2.5 w-2.5">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
           <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500" />
         </span>
-        <span className="text-[12px] font-semibold text-gray-700 whitespace-nowrap">Open to Opportunities</span>
+        <span className="text-[12px] font-semibold whitespace-nowrap" style={{ color: dark ? 'rgba(200,200,200,0.85)' : '#374151', transition: 'color 0.5s ease' }}>Open to Opportunities</span>
       </div>
 
       {/* ── Stats · right edge center ── */}
@@ -174,13 +177,13 @@ const About = () => {
                 <Infinity />
               </span>
             ) : (
-              <span className="font-black text-gray-900"
-                style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: '32px', lineHeight: 1 }}>
+              <span className="font-black"
+                style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: '32px', lineHeight: 1, color: dark ? '#f0f0f0' : '#111827', transition: 'color 0.5s ease' }}>
                 {s.value}
               </span>
             )}
-            <span className="font-semibold text-gray-400 uppercase whitespace-nowrap"
-              style={{ fontSize: '9px', letterSpacing: '0.22em' }}>
+            <span className="font-semibold uppercase whitespace-nowrap"
+              style={{ fontSize: '9px', letterSpacing: '0.22em', color: dark ? 'rgba(140,140,140,0.6)' : '#9ca3af', transition: 'color 0.5s ease' }}>
               {s.label}
             </span>
           </div>
@@ -195,8 +198,9 @@ const About = () => {
             style={{
 
               fontSize: 'clamp(64px,9vw,148px)',
-              color: 'rgba(175,172,165,0.22)',
+              color: dark ? 'rgba(255,255,255,0.07)' : 'rgba(175,172,165,0.22)',
               letterSpacing: '0.1em',
+              transition: 'color 0.5s ease'
             }}>
             ABOUT
           </span>
@@ -224,14 +228,14 @@ const About = () => {
 
             {/* Heading */}
             <h2 ref={headingRef}
-              className="font-bold text-gray-900 leading-[1.18] mb-7 font-heading"
-              style={{ fontSize: 'clamp(26px,3vw,44px)' }}>
+              className="font-bold leading-[1.18] mb-7 font-heading"
+              style={{ fontSize: 'clamp(26px,3vw,44px)', color: dark ? '#f0f0f0' : '#111827', transition: 'color 0.5s ease' }}>
               Crafting digital experiences
               with precision and purpose.
             </h2>
 
             {/* Body paragraph */}
-            <p ref={bodyRef} className="text-gray-500 leading-[1.85] max-md:hidden [&>span]:text-[#161616] [&>span]:font-medium" style={{ fontSize: 'clamp(13px,1.05vw,14px)' }}>
+            <p ref={bodyRef} className={`leading-[1.85] max-md:hidden ${dark ? '[&>span]:text-[#F5C518]' : '[&>span]:text-[#161616]'} [&>span]:transition-colors [&>span]:duration-500 [&>span]:ease-in-out [&>span]:font-medium`} style={{ fontSize: 'clamp(13px,1.05vw,14px)', color: dark ? 'rgba(180,180,180,0.75)' : '#6b7280', transition: 'color 0.5s ease' }}>
               I'm Anuj, a passionate <span>Frontend Developer</span> building modern,
               high-performance web applications that combine clean architecture
               with exceptional user experiences. I specialize in creating
@@ -239,18 +243,18 @@ const About = () => {
               <span> GSAP</span>, while developing scalable backend services with <span>Node.js</span>,
               <span> Express</span>, <span>MongoDB</span>, and <span>Redis</span>.
             </p>
-            <p ref={bodyRef} className="text-gray-500 leading-[1.85] md:hidden [&>span]:text-[#161616] [&>span]:font-medium" style={{ fontSize: 'clamp(13px,1.05vw,14px)' }}>
+            <p ref={bodyRef} className={`leading-[1.85] md:hidden ${dark ? '[&>span]:text-[#F5C518]' : '[&>span]:text-[#161616]'} [&>span]:transition-colors [&>span]:duration-500 [&>span]:ease-in-out [&>span]:font-medium`} style={{ fontSize: 'clamp(13px,1.05vw,14px)', color: dark ? 'rgba(180,180,180,0.75)' : '#6b7280', transition: 'color 0.5s ease' }}>
               I'm Anuj, a <span>Frontend JavaScript Developer</span> with a passion for creating fast, responsive, and user-centric web applications. I build modern interfaces using <span>React</span>, <span>Tailwind CSS</span>, and <span>GSAP</span>, while developing scalable backend systems with <span>Node.js</span>, <span>Express</span>, <span>MongoDB</span>, and <span>Redis</span>.
             </p>
-            <p ref={bodyRef} className="text-gray-500 leading-[1.85] pt-4 max-md:hidden [&>span]:text-[#161616] [&>span]:font-medium" style={{ fontSize: 'clamp(13px,1.05vw,14px)' }}>
+            <p ref={bodyRef} className={`leading-[1.85] pt-4 max-md:hidden ${dark ? '[&>span]:text-[#F5C518]' : '[&>span]:text-[#161616]'} [&>span]:transition-colors [&>span]:duration-500 [&>span]:ease-in-out [&>span]:font-medium`} style={{ fontSize: 'clamp(13px,1.05vw,14px)', color: dark ? 'rgba(180,180,180,0.75)' : '#6b7280', transition: 'color 0.5s ease' }}>
               Beyond crafting <span>pixel-perfect UIs</span>,
               I enjoy solving complex engineering problems—from designing <span>secure
                 authentication</span> systems with <span>JWT</span> and <span>Redis</span> to building <span>RESTful APIs</span>, <span>microservices</span>, and cloud-integrated applications. My focus is on writing clean, maintainable code that delivers performance, scalability, and a seamless user experience.
             </p>
-            <p ref={bodyRef} className="text-gray-500 leading-[1.85] pt-4 md:hidden [&>span]:text-[#161616] [&>span]:font-medium" style={{ fontSize: 'clamp(13px,1.05vw,14px)' }}>
+            <p ref={bodyRef} className={`leading-[1.85] pt-4 md:hidden ${dark ? '[&>span]:text-[#F5C518]' : '[&>span]:text-[#161616]'} [&>span]:transition-colors [&>span]:duration-500 [&>span]:ease-in-out [&>span]:font-medium`} style={{ fontSize: 'clamp(13px,1.05vw,14px)', color: dark ? 'rgba(180,180,180,0.75)' : '#6b7280', transition: 'color 0.5s ease' }}>
               I believe great software is a balance of thoughtful design and solid engineering. Whether I'm building interactive frontends, <span>secure authentication</span> systems, or <span>RESTful APIs</span>, I strive to deliver clean, maintainable, and high-performance solutions while continuously learning new technologies.
             </p>
-            <p ref={bodyRef} className="text-gray-500 leading-[1.85] pt-4 max-md:hidden [&>span]:text-[#161616] [&>span]:font-medium" style={{ fontSize: 'clamp(13px,1.05vw,14px)' }}>
+            <p ref={bodyRef} className={`leading-[1.85] pt-4 max-md:hidden ${dark ? '[&>span]:text-[#F5C518]' : '[&>span]:text-[#161616]'} [&>span]:transition-colors [&>span]:duration-500 [&>span]:ease-in-out [&>span]:font-medium`} style={{ fontSize: 'clamp(13px,1.05vw,14px)', color: dark ? 'rgba(180,180,180,0.75)' : '#6b7280', transition: 'color 0.5s ease' }}>
               I'm constantly exploring new technologies, refining my development
               workflow, and pushing the boundaries of <span>modern web development</span>.
               Whether it's creating immersive frontend experiences or architecting
@@ -269,8 +273,9 @@ const About = () => {
                 style={{
 
                   fontSize: 'clamp(64px,9vw,148px)',
-                  color: 'rgba(175,172,165,0.22)',
+                  color: dark ? 'rgba(255,255,255,0.07)' : 'rgba(175,172,165,0.22)',
                   letterSpacing: '0.1em',
+                  transition: 'color 0.5s ease'
                 }}>
                 ABOUT
               </span>
@@ -282,26 +287,26 @@ const About = () => {
                 <div
                   key={card.title}
                   ref={el => (cardsRef.current[i] = el)}
-                  className="group rounded-2xl p-5 border transition-all duration-300 cursor-default
-                             hover:-translate-y-1 hover:shadow-xl hover:border-yellow-100"
+                  className={`group rounded-2xl p-5 border cursor-default hover:-translate-y-1 hover:shadow-xl ${dark ? 'hover:!border-[rgba(245,197,24,0.25)]' : 'hover:!border-[rgba(245,197,24,0.4)]'}`}
                   style={{
-                    background: i % 2 === 0 ? 'rgba(255,255,255,0.88)' : 'rgba(255,255,255,0.68)',
-                    border: '1px solid rgba(220,218,210,0.6)',
+                    background: dark ? 'rgba(28,28,28,0.90)' : (i % 2 === 0 ? 'rgba(255,255,255,0.88)' : 'rgba(255,255,255,0.68)'),
+                    borderColor: dark ? 'rgba(255,255,255,0.07)' : 'rgba(220,218,210,0.6)',
                     boxShadow: '0 2px 20px rgba(0,0,0,0.04)',
                     backdropFilter: 'blur(8px)',
+                    transition: 'background 0.5s ease, border-color 0.5s ease, transform 0.3s ease, box-shadow 0.3s ease'
                   }}
                 >
                   {/* Icon badge */}
-                  <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-4 transition-colors duration-300 text-[#F5C518] group-hover:bg-yellow-50"
+                  <div className={`w-11 h-11 rounded-xl flex items-center justify-center mb-4 transition-colors duration-300 text-[#F5C518] ${dark ? 'group-hover:bg-white/5' : 'group-hover:bg-yellow-50'}`}
                     style={{ background: 'rgba(245,197,24,0.10)', border: '1px solid rgba(245,197,24,0.2)' }}>
                     <card.icon />
                   </div>
 
-                  <h3 className="font-semibold text-gray-800 mb-1.5"
-                    style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: '14px' }}>
+                  <h3 className="font-semibold mb-1.5"
+                    style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: '14px', color: dark ? '#e5e5e5' : '#1f2937', transition: 'color 0.5s ease' }}>
                     {card.title}
                   </h3>
-                  <p className="text-gray-400 leading-relaxed max-md:hidden" style={{ fontSize: '12px' }}>
+                  <p className="leading-relaxed max-md:hidden" style={{ fontSize: '12px', color: dark ? 'rgba(160,160,160,0.7)' : '#9ca3af', transition: 'color 0.5s ease' }}>
                     {card.desc}
                   </p>
                 </div>
@@ -319,11 +324,11 @@ const About = () => {
             {s.icon ? (
               <span className="font-bold font-mono text-xl" style={{ color: '#F5C518' }}>&lt;/&gt;</span>
             ) : (
-              <span className="font-black text-gray-900 text-2xl"
-                style={{ fontFamily: "'Space Grotesk',sans-serif" }}>{s.value}</span>
+              <span className="font-black text-2xl"
+                style={{ fontFamily: "'Space Grotesk',sans-serif", color: dark ? '#f0f0f0' : '#111827', transition: 'color 0.5s ease' }}>{s.value}</span>
             )}
-            <span className="font-semibold text-gray-400 uppercase"
-              style={{ fontSize: '9px', letterSpacing: '0.2em' }}>{s.label}</span>
+            <span className="font-semibold uppercase"
+              style={{ fontSize: '9px', letterSpacing: '0.2em', color: dark ? 'rgba(140,140,140,0.6)' : '#9ca3af', transition: 'color 0.5s ease' }}>{s.label}</span>
           </div>
         ))}
       </div>

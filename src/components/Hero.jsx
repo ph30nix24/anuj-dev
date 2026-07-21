@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import gsap from 'gsap';
 import HeroCanvas from './HeroCanvas';
+import { useTheme } from '../context/ThemeContext';
 
 /* ─── breakpoint hook ─── */
 const useWindowWidth = () => {
@@ -24,6 +25,8 @@ const Hero = () => {
   const scrollRef = useRef(null);
   const glowRef = useRef(null);
   const btnGroupRef = useRef(null);
+
+  const { dark } = useTheme();
 
   const w = useWindowWidth();
   const isMobile = w < 768;
@@ -132,35 +135,48 @@ const Hero = () => {
   return (
 
     <>
-      <HeroCanvas />
+      <HeroCanvas dark={dark} />
       <section
         id="home"
         className="relative w-full overflow-hidden"
-        style={{ height: '100vh', minHeight: isMobile ? '560px' : '640px', background: '#F4F3EF' }}
+        style={{
+          height: '100vh',
+          minHeight: isMobile ? '560px' : '640px',
+          background: dark ? '#0d0d0d' : '#F4F3EF',
+          transition: 'background 0.5s ease',
+        }}
       >
 
-        {/* ═══════════════════════════════════════════
-          LAYER 0 — Giant background typography
-      ═══════════════════════════════════════════ */}
+        {/* LAYER 0 — Giant background typography */}
         <div
           className="absolute inset-0 flex flex-col justify-center items-center pointer-events-none select-none z-0 pt-15 max-md:top-0 max-md:h-fit max-md:translate-y-3/4"
         >
           <span
-            className={`bg-text-row block w-full text-center font-black uppercase leading-none font-heading ${isMobile ? 'text-[clamp(36px,12vw,128px)]' : isTablet ? 'text-[clamp(56px,11vw,110px)]' : 'text-[clamp(72px,12vw,152px)]'} tracking-wide stroke-text`}
-
+            className={`bg-text-row block w-full text-center font-black uppercase leading-none font-heading ${
+              isMobile ? 'text-[clamp(36px,12vw,128px)]' : isTablet ? 'text-[clamp(56px,11vw,110px)]' : 'text-[clamp(72px,12vw,152px)]'
+            } tracking-wide`}
+            style={{
+              color: 'transparent',
+              WebkitTextStroke: dark ? '0.5px rgba(255,255,255,0.18)' : '0.5px rgba(22,22,22,0.12)',
+              transition: 'all 0.5s ease',
+            }}
           >
             FRONTEND
           </span>
           <span
-            className={`bg-text-row block w-full text-center font-black uppercase leading-none font-heading ${isMobile ? 'text-[clamp(36px,17vw,128px)]' : isTablet ? 'text-[clamp(56px,11vw,110px)]' : 'text-[clamp(72px,12vw,192px)]'} tracking-wide  text-[#16161697]`}
+            className={`bg-text-row block w-full text-center font-black uppercase leading-none font-heading ${
+              isMobile ? 'text-[clamp(36px,17vw,128px)]' : isTablet ? 'text-[clamp(56px,11vw,110px)]' : 'text-[clamp(72px,12vw,192px)]'
+            } tracking-wide`}
+            style={{
+              color: dark ? 'rgba(255,255,255,0.10)' : 'rgba(22,22,22,0.09)',
+              transition: 'color 0.5s ease',
+            }}
           >
             DEVELOPER
           </span>
         </div>
 
-        {/* ═══════════════════════════════════════════
-          LAYER 1 — Warm glow orb (behind image)
-      ═══════════════════════════════════════════ */}
+        {/* LAYER 1 — Glow orb */}
         <div
           ref={glowRef}
           className="absolute z-10 rounded-full pointer-events-none"
@@ -170,19 +186,22 @@ const Hero = () => {
             left: '50%',
             bottom: isMobile ? '25%' : '-40px',
             transform: isMobile ? 'translateY(-30%) translateX(-10%)' : 'translateX(-50%)',
-            background: 'radial-gradient(circle at 50% 60%, rgba(245,197,24,0.28) 0%, rgba(255,215,60,0.14) 45%, transparent 75%)',
+            background: dark
+              ? 'radial-gradient(circle at 50% 60%, rgba(245,197,24,0.18) 0%, rgba(245,197,24,0.06) 45%, transparent 75%)'
+              : 'radial-gradient(circle at 50% 60%, rgba(245,197,24,0.28) 0%, rgba(255,215,60,0.14) 45%, transparent 75%)',
             filter: 'blur(4px)',
+            transition: 'background 0.5s ease',
           }}
         />
 
         {/* ═══════════════════════════════════════════
           LAYER 2 — Hero image (bottom-anchored, centred)
-      ═══════════════════════════════════════════ */}
+        ═══════════════════════════════════════════ */}
         <img
           ref={imgRef}
           src="/hero.webp"
           alt="Anuj — Frontend Developer"
-          className="absolute z-20 pointer-events-none select-none object-contain"
+          className="absolute z-20 pointer-events-none select-none object-contain hero-image"
           style={{
             width: imgWidth,
             height: 'auto',
@@ -209,8 +228,13 @@ const Hero = () => {
           {/* ── "Hey, I'm Anuj" row ── */}
           <div className="flex items-center gap-2 max-md:mt-10">
             <span
-              className="font-bold text-gray-800 whitespace-nowrap"
-              style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: greetSize }}
+              className="font-bold whitespace-nowrap"
+              style={{
+                fontFamily: "'Space Grotesk', sans-serif",
+                fontSize: greetSize,
+                color: dark ? '#f0f0f0' : '#1f2937',
+                transition: 'color 0.5s ease',
+              }}
             >
               Hey, I'm Anuj
             </span>
@@ -237,38 +261,45 @@ const Hero = () => {
               <circle cx="12" cy="10" r="3" />
             </svg>
             <span
-              className="text- font-body font-medium whitespace-nowrap"
-              style={{ fontSize: isMobile ? '11px' : '14px', letterSpacing: '0.05em' }}
+              className="font-body font-medium whitespace-nowrap"
+              style={{
+                fontSize: isMobile ? '11px' : '14px',
+                letterSpacing: '0.05em',
+                color: dark ? 'rgba(180,180,180,0.8)' : '#9ca3af',
+                transition: 'color 0.5s ease',
+              }}
             >
               Based in Delhi, India
             </span>
           </div>
         </div>
 
-        {/* ═══════════════════════════════════════════
-          LAYER 3 — "Open to Opportunities" pill
-          visible on tablet + desktop
-      ═══════════════════════════════════════════ */}
+        {/* LAYER 3 — "Open to Opportunities" pill */}
         <div
           ref={pillRef}
-          className="absolute z-30 items-center gap-2.5 bg-white rounded-full px-4 py-2 shadow-md border border-gray-100"
+          className="absolute z-30 items-center gap-2.5 rounded-full px-4 py-2 shadow-md"
           style={{
             top: isMobile ? '80px' : '100px',
             right: isMobile ? '16px' : isTablet ? '24px' : '52px',
             display: isMobile ? 'none' : 'flex',
+            background: dark ? 'rgba(30,30,30,0.95)' : '#ffffff',
+            border: dark ? '1px solid rgba(255,255,255,0.10)' : '1px solid #f3f4f6',
+            transition: 'background 0.5s ease, border 0.5s ease',
           }}
         >
           <span className="relative flex h-2.5 w-2.5">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
             <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500" />
           </span>
-          <span className="text-[12px] font-semibold text-gray-700 whitespace-nowrap">Open to Opportunities</span>
+          <span
+            className="text-[12px] font-semibold whitespace-nowrap"
+            style={{ color: dark ? '#d1d5db' : '#374151', transition: 'color 0.5s ease' }}
+          >
+            Open to Opportunities
+          </span>
         </div>
 
-        {/* ═══════════════════════════════════════════
-          LAYER 3 — PIXEL PERFECT UI/UX
-          visible on desktop only
-      ═══════════════════════════════════════════ */}
+        {/* LAYER 3 — PIXEL PERFECT UI/UX */}
         <div
           ref={pixelRef}
           className="absolute z-30 flex-col gap-1"
@@ -282,8 +313,13 @@ const Hero = () => {
           {['PIXEL', 'PERFECT', 'UI/UX'].map((word) => (
             <span
               key={word}
-              className="block font-semibold uppercase text-gray-400"
-              style={{ fontSize: '11px', letterSpacing: '0.28em' }}
+              className="block font-semibold uppercase"
+              style={{
+                fontSize: '11px',
+                letterSpacing: '0.28em',
+                color: dark ? 'rgba(180,180,180,0.55)' : '#9ca3af',
+                transition: 'color 0.5s ease',
+              }}
             >
               {word}
             </span>
@@ -326,10 +362,13 @@ const Hero = () => {
           <a
             href="/resume.pdf"
             download
-            className="group flex items-center gap-3 rounded-full border-2 border-gray-300 text-gray-600 font-semibold transition-all duration-300 hover:border-gray-800 hover:text-gray-900 hover:-translate-y-0.5 active:scale-95 max-lg:w-fit max-md:gap-6"
+            className="group flex items-center gap-3 rounded-full font-semibold transition-all duration-300 hover:-translate-y-0.5 active:scale-95 max-lg:w-fit max-md:gap-6"
             style={{
               padding: isMobile ? '11px 20px' : '13px 24px',
               fontSize: isMobile ? '13px' : '14px',
+              border: dark ? '2px solid rgba(255,255,255,0.18)' : '2px solid #d1d5db',
+              color: dark ? '#d1d5db' : '#4b5563',
+              transition: 'border 0.5s ease, color 0.5s ease',
             }}
           >
             Download CV
@@ -360,12 +399,14 @@ const Hero = () => {
             className="scroll-line rounded-full w-[1.5px] h-13 bg-linear-to-b from-[#F5C518] to-[#f5c5181a]"
           />
           <span
-            className="scroll-text font-semibold text-gray-400 uppercase"
+            className="scroll-text font-semibold uppercase"
             style={{
               fontSize: '9px',
               letterSpacing: '0.32em',
               writingMode: 'vertical-rl',
               transform: 'rotate(180deg)',
+              color: dark ? 'rgba(180,180,180,0.5)' : '#9ca3af',
+              transition: 'color 0.5s ease',
             }}
           >
             Scroll Down

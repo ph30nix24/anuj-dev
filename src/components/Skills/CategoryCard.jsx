@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import SkillTag from "./SkillTag";
 import gsap from "gsap";
 
-const CategoryCard = ({ cat, cardIdx, triggered }) => {
+const CategoryCard = ({ cat, cardIdx, triggered, dark }) => {
   const cardRef = useRef(null);
 
   useEffect(() => {
@@ -17,25 +17,38 @@ const CategoryCard = ({ cat, cardIdx, triggered }) => {
   return (
     <div
       ref={cardRef}
-      className="rounded-2xl p-6 flex flex-col gap-5 h-full"
+      className="rounded-2xl p-6 flex flex-col gap-5 h-full transition-colors duration-500"
       style={{
-        background: 'rgba(255,255,255,0.65)',
-        border: '1px solid rgba(220,218,210,0.55)',
+        background: dark ? 'rgba(28,28,28,0.90)' : 'rgba(255,255,255,0.65)',
+        border: `1px solid ${dark ? 'rgba(255,255,255,0.07)' : 'rgba(220,218,210,0.55)'}`,
         backdropFilter: 'blur(10px)',
         boxShadow: '0 4px 32px rgba(0,0,0,0.05)',
         opacity: 0,   /* hidden until GSAP fires */
+        transition: 'background 0.5s ease, border 0.5s ease'
       }}
     >
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
           <h3
-            className="font-bold text-gray-900 text-[15px] mb-0.5"
-            style={{ fontFamily: "'Space Grotesk',sans-serif" }}
+            className="font-bold mb-0.5 transition-colors duration-500"
+            style={{ 
+              fontFamily: "'Space Grotesk',sans-serif",
+              color: dark ? '#f0f0f0' : '#111827',
+              transition: 'color 0.5s ease'
+            }}
           >
             {cat.label}
           </h3>
-          <p className="text-[11px] text-gray-400 font-medium">{cat.desc}</p>
+          <p 
+            className="text-[11px] font-medium transition-colors duration-500"
+            style={{
+              color: dark ? 'rgba(160,160,160,0.7)' : '#9ca3af',
+              transition: 'color 0.5s ease'
+            }}
+          >
+            {cat.desc}
+          </p>
         </div>
         {/* Code bracket icon */}
         <div
@@ -50,20 +63,44 @@ const CategoryCard = ({ cat, cardIdx, triggered }) => {
       </div>
 
       {/* Divider */}
-      <div className="h-px w-full" style={{ background: 'rgba(200,198,190,0.4)' }} />
+      <div 
+        className="h-px w-full transition-colors duration-500" 
+        style={{ 
+          background: dark ? 'rgba(255,255,255,0.07)' : 'rgba(200,198,190,0.4)',
+          transition: 'background 0.5s ease'
+        }} 
+      />
 
       {/* Legend */}
       <div className="flex items-center gap-3 flex-wrap">
-        <span className="flex items-center gap-1.5 text-[10px] text-gray-400 font-medium">
+        <span 
+          className="flex items-center gap-1.5 text-[10px] font-medium transition-colors duration-500"
+          style={{
+            color: dark ? 'rgba(140,140,140,0.6)' : '#9ca3af',
+            transition: 'color 0.5s ease'
+          }}
+        >
           <span className="inline-block w-3 h-3 rounded-full" style={{ background: '#F5C518' }} />
           Expert
         </span>
-        <span className="flex items-center gap-1.5 text-[10px] text-gray-400 font-medium">
+        <span 
+          className="flex items-center gap-1.5 text-[10px] font-medium transition-colors duration-500"
+          style={{
+            color: dark ? 'rgba(140,140,140,0.6)' : '#9ca3af',
+            transition: 'color 0.5s ease'
+          }}
+        >
           <span className="inline-block w-3 h-3 rounded-full border"
             style={{ background: 'rgba(255,255,255,0.9)', borderColor: 'rgba(245,197,24,0.4)' }} />
           Advanced
         </span>
-        <span className="flex items-center gap-1.5 text-[10px] text-gray-400 font-medium">
+        <span 
+          className="flex items-center gap-1.5 text-[10px] font-medium transition-colors duration-500"
+          style={{
+            color: dark ? 'rgba(140,140,140,0.6)' : '#9ca3af',
+            transition: 'color 0.5s ease'
+          }}
+        >
           <span className="inline-block w-3 h-3 rounded-full border"
             style={{ background: 'rgba(255,255,255,0.7)', borderColor: 'rgba(200,198,190,0.6)' }} />
           Proficient
@@ -78,6 +115,7 @@ const CategoryCard = ({ cat, cardIdx, triggered }) => {
             key={skill.name}
             skill={skill}
             delay={cardIdx * 0.14 + 0.3 + i * 0.055}
+            dark={dark}
           />
         ))}
       </div>
@@ -85,4 +123,4 @@ const CategoryCard = ({ cat, cardIdx, triggered }) => {
   );
 };
 
-export default CategoryCard
+export default CategoryCard;

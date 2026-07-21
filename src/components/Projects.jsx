@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useTheme } from '../context/ThemeContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -176,14 +177,19 @@ const PreviewSVG = ({ id, colors }) => {
 };
 
 /* ─── Link buttons ─── */
-const LinkBtn = ({ href, icon, label }) => (
+const LinkBtn = ({ href, icon, label, dark }) => (
   <a
     href={href}
     target="_blank"
     rel="noopener noreferrer"
     className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[11px] font-semibold
                transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
-    style={{ background: 'rgba(245,197,24,0.12)', color: '#b38c00', border: '1px solid rgba(245,197,24,0.3)' }}
+    style={{ 
+      background: dark ? 'rgba(245,197,24,0.15)' : 'rgba(245,197,24,0.12)', 
+      color: dark ? '#d4a010' : '#b38c00', 
+      border: '1px solid rgba(245,197,24,0.3)',
+      transition: 'background 0.5s ease, color 0.5s ease'
+    }}
   >
     {icon}
     {label}
@@ -191,13 +197,14 @@ const LinkBtn = ({ href, icon, label }) => (
 );
 
 /* ─── Featured project card ─── */
-const FeaturedCard = ({ project, cardRef }) => (
+const FeaturedCard = ({ project, cardRef, dark }) => (
   <div
     ref={cardRef}
     className="group rounded-3xl overflow-hidden col-span-1 lg:col-span-2"
     style={{
-      background: 'rgba(255,255,255,0.70)',
-      border: '1px solid rgba(220,218,210,0.55)',
+      background: dark ? 'rgba(25,25,25,0.92)' : 'rgba(255,255,255,0.70)',
+      border: `1px solid ${dark ? 'rgba(255,255,255,0.07)' : 'rgba(220,218,210,0.55)'}`,
+      transition: 'background 0.5s ease, border 0.5s ease',
       backdropFilter: 'blur(10px)',
       boxShadow: '0 8px 48px rgba(0,0,0,0.06)',
       opacity: 0,
@@ -224,32 +231,48 @@ const FeaturedCard = ({ project, cardRef }) => (
             </span>
             <span className="text-[10px] text-gray-400 font-medium">{project.category}</span>
           </div>
-          <h3 className="font-bold text-gray-900 mb-3"
-            style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: 'clamp(22px,2.5vw,30px)' }}>
+          <h3 className="font-bold mb-3"
+            style={{ 
+              color: dark ? '#f0f0f0' : '#111827', 
+              transition: 'color 0.5s ease',
+              fontFamily: "'Space Grotesk',sans-serif", 
+              fontSize: 'clamp(22px,2.5vw,30px)' 
+            }}>
             {project.title}
           </h3>
-          <p className="text-gray-500 leading-relaxed text-[13px]">{project.desc}</p>
+          <p className="leading-relaxed text-[13px]"
+            style={{
+              color: dark ? 'rgba(175,175,175,0.8)' : '#6b7280',
+              transition: 'color 0.5s ease'
+            }}>
+            {project.desc}
+          </p>
         </div>
 
         <div className="flex flex-col gap-4">
           {/* Tech stack */}
           <div className="flex flex-wrap gap-2">
             {project.tech.map(t => (
-              <span key={t} className="px-3 py-1 rounded-full text-[11px] font-semibold text-gray-600"
-                style={{ background: 'rgba(200,198,190,0.25)', border: '1px solid rgba(200,198,190,0.45)' }}>
+              <span key={t} className="px-3 py-1 rounded-full text-[11px] font-semibold"
+                style={{ 
+                  color: dark ? 'rgba(160,160,160,0.9)' : '#4b5563',
+                  background: dark ? 'rgba(50,50,50,0.7)' : 'rgba(200,198,190,0.25)', 
+                  border: `1px solid ${dark ? 'rgba(255,255,255,0.08)' : 'rgba(200,198,190,0.45)'}`,
+                  transition: 'background 0.5s ease, border 0.5s ease, color 0.5s ease'
+                }}>
                 {t}
               </span>
             ))}
           </div>
           {/* Links */}
           <div className="flex items-center gap-2.5">
-            <LinkBtn href={project.live} label="Live Demo" icon={
+            <LinkBtn href={project.live} label="Live Demo" dark={dark} icon={
               <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                 <path d="M5 2H2a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V7"/>
                 <path d="M8 1h3v3M11 1 6 6"/>
               </svg>
             }/>
-            <LinkBtn href={project.repo} label="GitHub" icon={
+            <LinkBtn href={project.repo} label="GitHub" dark={dark} icon={
               <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.089-.745.083-.729.083-.729 1.205.084 1.84 1.236 1.84 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.418-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23a11.52 11.52 0 0 1 3-.405c1.02.005 2.045.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.605-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
               </svg>
@@ -262,13 +285,14 @@ const FeaturedCard = ({ project, cardRef }) => (
 );
 
 /* ─── Regular project card ─── */
-const ProjectCard = ({ project, cardRef }) => (
+const ProjectCard = ({ project, cardRef, dark }) => (
   <div
     ref={cardRef}
     className="group rounded-3xl overflow-hidden flex flex-col"
     style={{
-      background: 'rgba(255,255,255,0.70)',
-      border: '1px solid rgba(220,218,210,0.55)',
+      background: dark ? 'rgba(25,25,25,0.92)' : 'rgba(255,255,255,0.70)',
+      border: `1px solid ${dark ? 'rgba(255,255,255,0.07)' : 'rgba(220,218,210,0.55)'}`,
+      transition: 'background 0.5s ease, border 0.5s ease',
       backdropFilter: 'blur(10px)',
       boxShadow: '0 4px 32px rgba(0,0,0,0.05)',
       opacity: 0,
@@ -309,33 +333,54 @@ const ProjectCard = ({ project, cardRef }) => (
         <div className="flex gap-2">
           <a href={project.live} target="_blank" rel="noopener noreferrer"
             className="w-7 h-7 rounded-full flex items-center justify-center transition-colors duration-200 hover:bg-yellow-50"
-            style={{ border: '1px solid rgba(200,198,190,0.5)' }}>
-            <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="#888" strokeWidth="2" strokeLinecap="round">
+            style={{ 
+              border: `1px solid ${dark ? 'rgba(255,255,255,0.10)' : 'rgba(200,198,190,0.5)'}`,
+              transition: 'border 0.5s ease, background-color 0.2s'
+            }}>
+            <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke={dark ? '#aaa' : '#888'} style={{ transition: 'stroke 0.5s ease' }} strokeWidth="2" strokeLinecap="round">
               <path d="M5 2H2a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V7"/>
               <path d="M8 1h3v3M11 1 6 6"/>
             </svg>
           </a>
           <a href={project.repo} target="_blank" rel="noopener noreferrer"
             className="w-7 h-7 rounded-full flex items-center justify-center transition-colors duration-200 hover:bg-yellow-50"
-            style={{ border: '1px solid rgba(200,198,190,0.5)' }}>
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="#888">
+            style={{ 
+              border: `1px solid ${dark ? 'rgba(255,255,255,0.10)' : 'rgba(200,198,190,0.5)'}`,
+              transition: 'border 0.5s ease, background-color 0.2s'
+            }}>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill={dark ? '#aaa' : '#888'} style={{ transition: 'fill 0.5s ease' }}>
               <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.089-.745.083-.729.083-.729 1.205.084 1.84 1.236 1.84 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.418-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23a11.52 11.52 0 0 1 3-.405c1.02.005 2.045.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.605-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
             </svg>
           </a>
         </div>
       </div>
 
-      <h3 className="font-bold text-gray-900 text-[16px]"
-        style={{ fontFamily: "'Space Grotesk',sans-serif" }}>
+      <h3 className="font-bold text-[16px]"
+        style={{ 
+          color: dark ? '#f0f0f0' : '#111827',
+          transition: 'color 0.5s ease',
+          fontFamily: "'Space Grotesk',sans-serif" 
+        }}>
         {project.title}
       </h3>
 
-      <p className="text-gray-400 text-[12px] leading-relaxed flex-1">{project.desc}</p>
+      <p className="text-[12px] leading-relaxed flex-1"
+        style={{
+          color: dark ? 'rgba(160,160,160,0.7)' : '#9ca3af',
+          transition: 'color 0.5s ease'
+        }}>
+        {project.desc}
+      </p>
 
       <div className="flex flex-wrap gap-1.5 pt-1">
         {project.tech.map(t => (
-          <span key={t} className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold text-gray-500"
-            style={{ background: 'rgba(200,198,190,0.22)', border: '1px solid rgba(200,198,190,0.4)' }}>
+          <span key={t} className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold"
+            style={{ 
+              color: dark ? 'rgba(160,160,160,0.9)' : '#6b7280',
+              background: dark ? 'rgba(50,50,50,0.7)' : 'rgba(200,198,190,0.22)', 
+              border: `1px solid ${dark ? 'rgba(255,255,255,0.08)' : 'rgba(200,198,190,0.4)'}`,
+              transition: 'background 0.5s ease, border 0.5s ease, color 0.5s ease'
+            }}>
             {t}
           </span>
         ))}
@@ -346,6 +391,7 @@ const ProjectCard = ({ project, cardRef }) => (
 
 /* ─────────────────── Main component ─────────────────────── */
 const Projects = () => {
+  const { dark } = useTheme();
   const sectionRef = useRef(null);
   const labelRef   = useRef(null);
   const headingRef = useRef(null);
@@ -390,7 +436,12 @@ const Projects = () => {
       ref={sectionRef}
       id="projects"
       className="relative w-full overflow-hidden"
-      style={{ background: '#F4F3EF', paddingTop: '100px', paddingBottom: '100px' }}
+      style={{ 
+        background: dark ? '#0d0d0d' : '#F4F3EF', 
+        transition: 'background 0.5s ease',
+        paddingTop: '100px', 
+        paddingBottom: '100px' 
+      }}
     >
 
       {/* ── Header ── */}
@@ -405,7 +456,8 @@ const Projects = () => {
             style={{
               fontFamily: "'Space Grotesk',sans-serif",
               fontSize: 'clamp(60px,11vw,150px)',
-              color: 'rgba(175,172,165,0.28)',
+              color: dark ? 'rgba(255,255,255,0.07)' : 'rgba(175,172,165,0.28)',
+              transition: 'color 0.5s ease',
               letterSpacing: '0.12em',
             }}>
             WORK
@@ -425,8 +477,13 @@ const Projects = () => {
         {/* Heading */}
         <h2
           ref={headingRef}
-          className="relative z-10 font-bold text-gray-900 leading-tight"
-          style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: 'clamp(26px,3.5vw,46px)' }}
+          className="relative z-10 font-bold leading-tight"
+          style={{ 
+            color: dark ? '#f0f0f0' : '#111827',
+            transition: 'color 0.5s ease',
+            fontFamily: "'Space Grotesk',sans-serif", 
+            fontSize: 'clamp(26px,3.5vw,46px)' 
+          }}
         >
           Featured Projects
         </h2>
@@ -438,14 +495,14 @@ const Projects = () => {
 
         {/* Row 1: featured (2/3) + first small card (1/3) */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-5">
-          <FeaturedCard project={featured} cardRef={el => (cardsRef.current[0] = el)} />
-          <ProjectCard  project={rest[0]}  cardRef={el => (cardsRef.current[1] = el)} />
+          <FeaturedCard project={featured} cardRef={el => (cardsRef.current[0] = el)} dark={dark} />
+          <ProjectCard  project={rest[0]}  cardRef={el => (cardsRef.current[1] = el)} dark={dark} />
         </div>
 
         {/* Row 2: two equal cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <ProjectCard project={rest[1]} cardRef={el => (cardsRef.current[2] = el)} />
-          <ProjectCard project={rest[2]} cardRef={el => (cardsRef.current[3] = el)} />
+          <ProjectCard project={rest[1]} cardRef={el => (cardsRef.current[2] = el)} dark={dark} />
+          <ProjectCard project={rest[2]} cardRef={el => (cardsRef.current[3] = el)} dark={dark} />
         </div>
 
         {/* CTA */}

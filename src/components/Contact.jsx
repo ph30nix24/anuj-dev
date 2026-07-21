@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useTheme } from '../context/ThemeContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -71,7 +72,7 @@ const SOCIALS = [
 ];
 
 /* ─── Floating label input ─── */
-const FloatInput = ({ id, label, type = 'text', value, onChange, required }) => {
+const FloatInput = ({ id, label, type = 'text', value, onChange, required, dark }) => {
   const [focused, setFocused] = useState(false);
   const active = focused || value.length > 0;
 
@@ -85,12 +86,14 @@ const FloatInput = ({ id, label, type = 'text', value, onChange, required }) => 
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         required={required}
-        className="w-full pt-5 pb-2 px-4 rounded-xl text-[14px] font-medium text-gray-800
-                   outline-none transition-all duration-200 peer"
+        className="w-full pt-5 pb-2 px-4 rounded-xl text-[14px] font-medium
+                   outline-none peer"
         style={{
-          background: 'rgba(255,255,255,0.75)',
-          border: `1.5px solid ${focused ? '#F5C518' : 'rgba(210,208,200,0.7)'}`,
+          background: dark ? 'rgba(30,30,30,0.85)' : 'rgba(255,255,255,0.75)',
+          border: `1.5px solid ${focused ? '#F5C518' : (dark ? 'rgba(255,255,255,0.10)' : 'rgba(210,208,200,0.7)')}`,
           boxShadow: focused ? '0 0 0 3px rgba(245,197,24,0.12)' : 'none',
+          color: dark ? '#e5e5e5' : '#1f2937',
+          transition: 'background 0.5s ease, border 0.5s ease, color 0.5s ease, box-shadow 0.2s ease',
         }}
       />
       <label
@@ -100,7 +103,7 @@ const FloatInput = ({ id, label, type = 'text', value, onChange, required }) => 
           top: active ? '8px' : '50%',
           transform: active ? 'translateY(0)' : 'translateY(-50%)',
           fontSize: active ? '10px' : '13px',
-          color: active ? '#F5C518' : '#aaa',
+          color: active ? '#F5C518' : (dark ? 'rgba(140,140,140,0.7)' : '#aaa'),
           letterSpacing: active ? '0.06em' : '0',
           textTransform: active ? 'uppercase' : 'none',
         }}
@@ -112,7 +115,7 @@ const FloatInput = ({ id, label, type = 'text', value, onChange, required }) => 
 };
 
 /* ─── Floating label textarea ─── */
-const FloatTextarea = ({ id, label, value, onChange, required }) => {
+const FloatTextarea = ({ id, label, value, onChange, required, dark }) => {
   const [focused, setFocused] = useState(false);
   const active = focused || value.length > 0;
 
@@ -126,12 +129,14 @@ const FloatTextarea = ({ id, label, value, onChange, required }) => {
         onBlur={() => setFocused(false)}
         required={required}
         rows={5}
-        className="w-full pt-6 pb-3 px-4 rounded-xl text-[14px] font-medium text-gray-800
-                   outline-none transition-all duration-200 resize-none"
+        className="w-full pt-6 pb-3 px-4 rounded-xl text-[14px] font-medium
+                   outline-none resize-none"
         style={{
-          background: 'rgba(255,255,255,0.75)',
-          border: `1.5px solid ${focused ? '#F5C518' : 'rgba(210,208,200,0.7)'}`,
+          background: dark ? 'rgba(30,30,30,0.85)' : 'rgba(255,255,255,0.75)',
+          border: `1.5px solid ${focused ? '#F5C518' : (dark ? 'rgba(255,255,255,0.10)' : 'rgba(210,208,200,0.7)')}`,
           boxShadow: focused ? '0 0 0 3px rgba(245,197,24,0.12)' : 'none',
+          color: dark ? '#e5e5e5' : '#1f2937',
+          transition: 'background 0.5s ease, border 0.5s ease, color 0.5s ease, box-shadow 0.2s ease',
         }}
       />
       <label
@@ -140,7 +145,7 @@ const FloatTextarea = ({ id, label, value, onChange, required }) => {
         style={{
           top: active ? '8px' : '18px',
           fontSize: active ? '10px' : '13px',
-          color: active ? '#F5C518' : '#aaa',
+          color: active ? '#F5C518' : (dark ? 'rgba(140,140,140,0.7)' : '#aaa'),
           letterSpacing: active ? '0.06em' : '0',
           textTransform: active ? 'uppercase' : 'none',
         }}
@@ -153,6 +158,8 @@ const FloatTextarea = ({ id, label, value, onChange, required }) => {
 
 /* ─── Main component ─── */
 const Contact = () => {
+  const { dark } = useTheme();
+
   const sectionRef  = useRef(null);
   const labelRef    = useRef(null);
   const headingRef  = useRef(null);
@@ -216,7 +223,12 @@ const Contact = () => {
         ref={sectionRef}
         id="contact"
         className="relative w-full overflow-hidden"
-        style={{ background: '#F4F3EF', paddingTop: '100px', paddingBottom: '100px' }}
+        style={{ 
+          background: dark ? '#0d0d0d' : '#F4F3EF', 
+          paddingTop: '100px', 
+          paddingBottom: '100px',
+          transition: 'background 0.5s ease' 
+        }}
       >
 
         {/* ── Header ── */}
@@ -232,8 +244,9 @@ const Contact = () => {
               style={{
                 fontFamily: "'Space Grotesk',sans-serif",
                 fontSize: 'clamp(52px,10vw,140px)',
-                color: 'rgba(175,172,165,0.26)',
+                color: dark ? 'rgba(255,255,255,0.06)' : 'rgba(175,172,165,0.26)',
                 letterSpacing: '0.1em',
+                transition: 'color 0.5s ease'
               }}
             >
               CONTACT
@@ -253,8 +266,13 @@ const Contact = () => {
           {/* Heading */}
           <h2
             ref={headingRef}
-            className="relative z-10 font-bold text-gray-900 leading-tight"
-            style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: 'clamp(26px,3.5vw,46px)' }}
+            className="relative z-10 font-bold leading-tight"
+            style={{ 
+              fontFamily: "'Space Grotesk',sans-serif", 
+              fontSize: 'clamp(26px,3.5vw,46px)',
+              color: dark ? '#f0f0f0' : '#111827',
+              transition: 'color 0.5s ease'
+            }}
           >
             Let's build something amazing
           </h2>
@@ -272,11 +290,19 @@ const Contact = () => {
 
               {/* Intro */}
               <div>
-                <h3 className="font-bold text-gray-900 text-xl mb-3"
-                  style={{ fontFamily: "'Space Grotesk',sans-serif" }}>
+                <h3 className="font-bold text-xl mb-3"
+                  style={{ 
+                    fontFamily: "'Space Grotesk',sans-serif",
+                    color: dark ? '#f0f0f0' : '#111827',
+                    transition: 'color 0.5s ease'
+                  }}>
                   Open to new opportunities
                 </h3>
-                <p className="text-gray-500 leading-relaxed text-[14px]">
+                <p className="leading-relaxed text-[14px]"
+                   style={{
+                     color: dark ? 'rgba(175,175,175,0.8)' : '#6b7280',
+                     transition: 'color 0.5s ease'
+                   }}>
                   Whether you have a project in mind, a role to fill, or just want
                   to say hello — I'd love to hear from you. I'm currently available
                   for freelance work and full-time positions.
@@ -290,9 +316,10 @@ const Contact = () => {
                     key={item.label}
                     className="group flex items-center gap-4 p-4 rounded-2xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md"
                     style={{
-                      background: 'rgba(255,255,255,0.70)',
-                      border: '1px solid rgba(220,218,210,0.55)',
+                      background: dark ? 'rgba(28,28,28,0.85)' : 'rgba(255,255,255,0.70)',
+                      border: dark ? '1px solid rgba(255,255,255,0.07)' : '1px solid rgba(220,218,210,0.55)',
                       backdropFilter: 'blur(8px)',
+                      transition: 'background 0.5s ease, border 0.5s ease, transform 0.3s ease, box-shadow 0.3s ease'
                     }}
                   >
                     <div
@@ -303,25 +330,32 @@ const Contact = () => {
                       {item.icon}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-widest mb-0.5">
+                      <p className="text-[10px] font-semibold uppercase tracking-widest mb-0.5"
+                         style={{ color: dark ? 'rgba(130,130,130,0.7)' : '#9ca3af', transition: 'color 0.5s ease' }}>
                         {item.label}
                       </p>
                       {item.href ? (
                         <a href={item.href}
-                          className="text-[13px] font-semibold text-gray-700 hover:text-yellow-600 transition-colors truncate block">
+                          className="text-[13px] font-semibold hover:text-yellow-600 transition-colors truncate block"
+                          style={{ color: dark ? '#d4d4d4' : '#374151', transition: 'color 0.5s ease' }}>
                           {item.value}
                         </a>
                       ) : (
-                        <span className="text-[13px] font-semibold text-gray-700">{item.value}</span>
+                        <span className="text-[13px] font-semibold"
+                          style={{ color: dark ? '#d4d4d4' : '#374151', transition: 'color 0.5s ease' }}>
+                          {item.value}
+                        </span>
                       )}
                     </div>
                     {/* Copy button for email */}
                     {item.label === 'Email' && (
                       <button
                         onClick={copyEmail}
-                        className="shrink-0 w-8 h-8 rounded-lg flex items-center justify-center
-                                   transition-all duration-200 hover:bg-yellow-50"
-                        style={{ border: '1px solid rgba(200,198,190,0.5)' }}
+                        className="shrink-0 w-8 h-8 rounded-lg flex items-center justify-center hover:bg-yellow-50"
+                        style={{ 
+                          border: dark ? '1px solid rgba(255,255,255,0.10)' : '1px solid rgba(200,198,190,0.5)',
+                          transition: 'border 0.5s ease, background 0.2s ease, transform 0.2s ease'
+                        }}
                         title="Copy email"
                       >
                         {copied ? (
@@ -342,7 +376,8 @@ const Contact = () => {
 
               {/* Socials */}
               <div>
-                <p className="text-[11px] text-gray-400 font-semibold uppercase tracking-widest mb-3">
+                <p className="text-[11px] font-semibold uppercase tracking-widest mb-3"
+                   style={{ color: dark ? 'rgba(130,130,130,0.7)' : '#9ca3af', transition: 'color 0.5s ease' }}>
                   Find me on
                 </p>
                 <div className="flex items-center gap-3">
@@ -353,11 +388,12 @@ const Contact = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       title={s.name}
-                      className="w-10 h-10 rounded-xl flex items-center justify-center text-gray-500
-                                 transition-all duration-200 hover:text-gray-900 hover:-translate-y-1 hover:shadow-md"
+                      className={`w-10 h-10 rounded-xl flex items-center justify-center hover:-translate-y-1 hover:shadow-md ${dark ? 'hover:text-white' : 'hover:text-gray-900'}`}
                       style={{
-                        background: 'rgba(255,255,255,0.70)',
-                        border: '1px solid rgba(220,218,210,0.55)',
+                        background: dark ? 'rgba(28,28,28,0.85)' : 'rgba(255,255,255,0.70)',
+                        border: dark ? '1px solid rgba(255,255,255,0.07)' : '1px solid rgba(220,218,210,0.55)',
+                        color: dark ? '#888' : '#6b7280',
+                        transition: 'background 0.5s ease, border 0.5s ease, color 0.5s ease, transform 0.3s ease, box-shadow 0.3s ease'
                       }}
                     >
                       {s.icon}
@@ -389,10 +425,11 @@ const Contact = () => {
               ref={rightRef}
               className="rounded-3xl p-7 sm:p-9"
               style={{
-                background: 'rgba(255,255,255,0.72)',
-                border: '1px solid rgba(220,218,210,0.55)',
+                background: dark ? 'rgba(22,22,22,0.92)' : 'rgba(255,255,255,0.72)',
+                border: dark ? '1px solid rgba(255,255,255,0.07)' : '1px solid rgba(220,218,210,0.55)',
                 backdropFilter: 'blur(12px)',
                 boxShadow: '0 8px 48px rgba(0,0,0,0.06)',
+                transition: 'background 0.5s ease, border 0.5s ease'
               }}
             >
               {sent ? (
@@ -408,11 +445,19 @@ const Contact = () => {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-bold text-gray-900 text-xl mb-2"
-                      style={{ fontFamily: "'Space Grotesk',sans-serif" }}>
+                    <h3 className="font-bold text-xl mb-2"
+                      style={{ 
+                        fontFamily: "'Space Grotesk',sans-serif",
+                        color: dark ? '#f0f0f0' : '#111827',
+                        transition: 'color 0.5s ease'
+                      }}>
                       Message Sent!
                     </h3>
-                    <p className="text-gray-500 text-[14px]">
+                    <p className="text-[14px]"
+                       style={{
+                         color: dark ? 'rgba(175,175,175,0.8)' : '#6b7280',
+                         transition: 'color 0.5s ease'
+                       }}>
                       Thanks for reaching out. I'll get back to you within 24 hours.
                     </p>
                   </div>
@@ -429,23 +474,31 @@ const Contact = () => {
                 /* ── Form ── */
                 <form onSubmit={handleSubmit} className="flex flex-col gap-5">
                   <div>
-                    <h3 className="font-bold text-gray-900 text-lg mb-1"
-                      style={{ fontFamily: "'Space Grotesk',sans-serif" }}>
+                    <h3 className="font-bold text-lg mb-1"
+                      style={{ 
+                        fontFamily: "'Space Grotesk',sans-serif",
+                        color: dark ? '#f0f0f0' : '#111827',
+                        transition: 'color 0.5s ease'
+                      }}>
                       Send a message
                     </h3>
-                    <p className="text-gray-400 text-[12px]">
+                    <p className="text-[12px]"
+                       style={{
+                         color: dark ? 'rgba(140,140,140,0.7)' : '#9ca3af',
+                         transition: 'color 0.5s ease'
+                       }}>
                       All fields marked with * are required.
                     </p>
                   </div>
 
                   {/* Name + Email row */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <FloatInput id="name"    label="Your Name *"    value={form.name}    onChange={set('name')}    required />
-                    <FloatInput id="email"   label="Email Address *" type="email" value={form.email}   onChange={set('email')}   required />
+                    <FloatInput id="name"    label="Your Name *"    value={form.name}    onChange={set('name')}    required dark={dark} />
+                    <FloatInput id="email"   label="Email Address *" type="email" value={form.email}   onChange={set('email')}   required dark={dark} />
                   </div>
 
-                  <FloatInput   id="subject" label="Subject *"       value={form.subject} onChange={set('subject')} required />
-                  <FloatTextarea id="message" label="Your Message *"  value={form.message} onChange={set('message')} required />
+                  <FloatInput   id="subject" label="Subject *"       value={form.subject} onChange={set('subject')} required dark={dark} />
+                  <FloatTextarea id="message" label="Your Message *"  value={form.message} onChange={set('message')} required dark={dark} />
 
                   {/* Submit */}
                   <button

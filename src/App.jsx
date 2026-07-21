@@ -5,18 +5,21 @@ import About from './components/About';
 import Skills from './components/Skills';
 import Projects from './components/Projects';
 import Contact from './components/Contact';
+import { ThemeProvider } from './context/ThemeContext';
 import './index.css';
 
 function App() {
   return (
-    <div className="min-h-screen" style={{ background: '#F4F3EF' }}>
-      <Navbar />
-      <Hero />
-      <About />
-      <Skills />
-      <Projects />
-      <Contact />
-    </div>
+    <ThemeProvider>
+      <div className="min-h-screen" style={{ background: '#F4F3EF' }}>
+        <Navbar />
+        <Hero />
+        <About />
+        <Skills />
+        <Projects />
+        <Contact />
+      </div>
+    </ThemeProvider>
   );
 }
 
