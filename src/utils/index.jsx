@@ -108,8 +108,8 @@ export const INFO = [
       </svg>
     ),
     label: 'Email',
-    value: 'anuj@example.com',
-    href: 'mailto:anuj@example.com',
+    value: 'ph30nix.dev@gmail.com',
+    href: 'mailto:aph30nix.dev@gmail.com',
   },
   {
     icon: (
@@ -129,7 +129,7 @@ export const INFO = [
       </svg>
     ),
     label: 'Phone',
-    value: '+91 98765 43210',
-    href: 'tel:+919876543210',
+    value: '+91 83685 60947',
+    href: 'tel:+918368560947',
   },
 ];

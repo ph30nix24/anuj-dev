@@ -33,7 +33,7 @@ const Contact = () => {
   };
 
   const copyEmail = () => {
-    navigator.clipboard.writeText('anuj@example.com');
+    navigator.clipboard.writeText('ph30nix.dev@gmail.com');
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };

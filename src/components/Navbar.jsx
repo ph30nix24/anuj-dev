@@ -67,7 +67,7 @@ const Navbar = () => {
         {/* Logo */}
         <a href="#" className="flex items-center gap-2 shrink-0">
           <span className='font-logo text-[#E0B310] text-2xl'>A</span>
-          <span className={`font-medium font-body text-xl tracking-tight ${dark ? 'text-white/90' : 'text-gray-900'}`} style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+          <span className={`font-medium font-body text-xl tracking-tight ${dark ? 'text-white/90' : 'text-gray-900'}`} >
             Anuj
           </span>
         </a>
