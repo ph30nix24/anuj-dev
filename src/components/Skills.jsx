@@ -3,7 +3,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import SkillTag from './Skills/SkillTag';
 import CategoryCard from './Skills/CategoryCard';
-import { ALL_TECH, CATEGORIES } from '../utils';
+import { ALL_TECH, CATEGORIES } from '../utils/index.jsx'
 import { useTheme } from '../context/ThemeContext';
 
 gsap.registerPlugin(ScrollTrigger);

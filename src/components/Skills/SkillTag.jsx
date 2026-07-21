@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { TIER_STYLES } from "../../utils";
+import { TIER_STYLES } from '../../utils/index'
 import gsap from "gsap";
 
 const getTier = (pct) => {
@@ -32,7 +32,7 @@ const SkillTag = ({ skill, delay, dark }) => {
       style={{ 
         ...styles, 
         backdropFilter: 'blur(6px)',
-        color: dark ? '#d1d5db' : '#374151',
+        color: dark ? '#161616' : '#374151',
         transition: 'background 0.5s ease, color 0.5s ease, border 0.5s ease, transform 0.2s'
       }}
       onMouseEnter={() => setHovered(true)}
@@ -49,6 +49,7 @@ const SkillTag = ({ skill, delay, dark }) => {
         <span
           className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-md
                      text-[10px] font-bold whitespace-nowrap pointer-events-none z-30"
+
           style={{ background: '#1a1a1a', color: '#F5C518' }}
         >
           {skill.pct}%
